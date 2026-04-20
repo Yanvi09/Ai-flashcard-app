@@ -1,95 +1,166 @@
-# Flashcraft - AI Flashcard Web App
+# AI Flashcard Learning App
 
-A polished full-stack flashcard app with:
-- React (Vite) frontend
-- Django backend
-- PDF upload + AI flashcard generation
-- Smart review (hard cards appear more often)
-- Progress tracking and explanation mode
-- No auth/database for user data (all decks and progress in localStorage)
+An AI-powered web application that converts PDFs into interactive flashcards to enhance learning through active recall and smart review.
 
-## Folder Structure
+---
 
-```text
+##  Live Demo
+
+Frontend: https://69e6705a950ff70dc5a036ae--thunderous-swan-90e94d.netlify.app/
+Backend: https://flashcard-backend-r4ag.onrender.com
+
+---
+
+##  Problem Statement
+
+Traditional studying methods rely heavily on passive reading, which leads to poor retention.
+This project addresses that by transforming static PDF content into **interactive flashcards** using AI-driven techniques.
+
+---
+
+##  Features
+
+* Upload any PDF and generate flashcards
+* AI-based question-answer generation (with fallback handling)
+* Interactive flashcard UI with flip animation
+* Mark cards as **Easy / Hard**
+* Progress tracking (completed, easy, hard)
+* Smart review logic (hard cards repeated more)
+* "Explain Answer" feature with graceful fallback
+* Fast and clean UI for seamless experience
+
+---
+
+## Key Design Decisions
+
+* Focused on **learning effectiveness** rather than just generation
+* Implemented **difficulty-based review system** instead of full spaced repetition
+* Used **localStorage** instead of database for simplicity and speed
+* Added **fallback mechanisms** to ensure app never crashes even if AI fails
+
+---
+
+## Trade-offs
+
+* No full SM-2 spaced repetition algorithm (time constraint)
+* No authentication system
+* Limited persistence (client-side storage only)
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React (Vite)
+* CSS (custom styling)
+* LocalStorage (state persistence)
+
+### Backend
+
+* Django
+* Gunicorn (production server)
+* PyPDF2 (PDF parsing)
+* Django CORS Headers
+
+### Deployment
+
+* Frontend: Netlify
+* Backend: Render
+
+---
+
+## Project Structure
+
+```
 Flashcard/
-  frontend/
-    src/
-      App.jsx
-      main.jsx
-      index.css
-    .env.example
-    package.json
-  backend_server/
-    backend/
-      settings.py
-      urls.py
-    api/
-      urls.py
-      views.py
-      services.py
-    requirements.txt
-    .env.example
-    manage.py
+│
+├── backend_server/
+│   ├── api/
+│   │   ├── views.py
+│   │   ├── services.py
+│   │   ├── urls.py
+│   │   └── models.py
+│   │
+│   ├── backend/
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   │
+│   ├── manage.py
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── assets/
+│   │
+│   ├── public/
+│   └── package.json
+│
+└── README.md
 ```
 
-## Backend Setup (Django)
+---
+
+## Setup Instructions (Local)
+
+### Backend
 
 ```bash
 cd backend_server
-python -m venv .venv
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env
-python manage.py migrate
 python manage.py runserver
 ```
 
-API endpoints:
-- `POST /upload-pdf/` - upload PDF, returns generated flashcards
-- `POST /explain/` - explain an answer in simple language
+---
 
-## Frontend Setup (React + Vite)
+### Frontend
 
 ```bash
 cd frontend
 npm install
-copy .env.example .env
 npm run dev
 ```
 
-Frontend runs on Vite default (`http://localhost:5173`).
+---
 
 ## Environment Variables
 
-Backend (`backend_server/.env`):
-- `OPENAI_API_KEY` (required)
-- `OPENAI_MODEL` (optional, default `gpt-4.1-mini`)
-- `DJANGO_SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CORS_ALLOW_ALL_ORIGINS`
+Create `.env` in backend:
 
-Frontend (`frontend/.env`):
-- `VITE_API_BASE_URL` (default `http://127.0.0.1:8000`)
+```
+OPENAI_API_KEY=your_key (optional)
+```
 
-## Product Features
+---
 
-- **Login page:** simple username stored in localStorage
-- **Dashboard:** upload PDF, generate deck, list all decks
-- **Practice mode:** flip cards, next/previous, mark easy/hard
-- **Smart review logic:** weighted queue repeats hard cards more often
-- **Progress panel:** total, completed, easy/hard counts + progress bar
-- **Explain Answer:** calls backend AI explanation endpoint
-- **Responsive UI:** modern cards, smooth transitions, soft visual design
+## Challenges Faced
 
-## Deployment Notes
+* Handling inconsistent PDF parsing
+* Ensuring AI response reliability
+* Preventing backend crashes with proper fallback logic
+* Managing full-stack deployment under time constraints
 
-### Backend on Render
-1. Create a Web Service from `backend_server`.
-2. Build command: `pip install -r requirements.txt`
-3. Start command: `python manage.py migrate && python manage.py runserver 0.0.0.0:$PORT`
-4. Add environment variables from `.env.example`.
+---
 
-### Frontend on Vercel
-1. Import `frontend` directory as project.
-2. Build command: `npm run build`
-3. Output directory: `dist`
-4. Add env var `VITE_API_BASE_URL` pointing to deployed Render backend URL.
+## Future Improvements
+
+* Implement full spaced repetition algorithm (SM-2)
+* Add authentication and cloud storage
+* Improve AI-generated flashcard quality
+* Add analytics dashboard for learning insights
+
+---
+
+## Author
+
+Developed by Yanvi
+GitHub: https://github.com/Yanvi09
+
+---
+
+## Conclusion
+
+This project focuses on delivering a **practical, reliable, and user-friendly learning tool**, showcasing strong product thinking and full-stack execution under constraints.
